@@ -21,15 +21,15 @@ class PosixIcmpChannel : public IProbeChannel {
   PosixIcmpChannel& operator=(const PosixIcmpChannel&) = delete;
   PosixIcmpChannel(PosixIcmpChannel&&) = delete;
   PosixIcmpChannel& operator=(PosixIcmpChannel&&) = delete;
-  ~PosixIcmpChannel() override = default;
+  ~PosixIcmpChannel() noexcept override = default;
 
   void set_hop_limit(int ttl) override;
   std::uint16_t send_probe(const IpAddress& dest, std::uint16_t seq,
-                           ByteSpan payload) override;
+                           const ByteSpan payload) override;
   std::optional<ReceivedPacket> receive(
       std::chrono::milliseconds timeout) override;
 
-  protected:
+ protected:
   PosixIcmpChannel(log::Logger log, UniqueFd fd, std::uint16_t ident,
                    bool refresh_ident_after_send);
 

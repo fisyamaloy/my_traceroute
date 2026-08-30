@@ -13,7 +13,7 @@ struct CliResult {
 };
 
 void print_help(std::ostream& out);
-[[nodiscard]] CliResult parse_cli(int argc, char** argv);
+[[nodiscard]] CliResult parse_cli(int argc, char* const* argv);
 
 }  // namespace app
 }  // namespace traceroute

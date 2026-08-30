@@ -12,7 +12,7 @@ namespace net {
 
 class INetworkFactory {
  public:
-  virtual ~INetworkFactory() = default;
+  virtual ~INetworkFactory() noexcept = default;
 
   INetworkFactory(const INetworkFactory&) = delete;
   INetworkFactory& operator=(const INetworkFactory&) = delete;
@@ -24,7 +24,7 @@ class INetworkFactory {
       const ProbeSpec& spec, const log::Logger& log) const = 0;
 
  protected:
-  INetworkFactory() = default;
+  INetworkFactory() noexcept = default;
 };
 
 }  // namespace net

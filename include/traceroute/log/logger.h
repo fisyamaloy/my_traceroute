@@ -14,7 +14,7 @@ enum class Level { kError, kWarn, kInfo, kDebug };
 
 class Logger {
  public:
-  Logger() = default;
+  Logger() noexcept = default;
   // Emits levels up to max_level (Error < Warn < Info < Debug).
   explicit Logger(std::ostream& err, Level max_level) noexcept
       : err_(&err), max_level_(max_level) {}
@@ -31,7 +31,7 @@ class Logger {
   Level max_level_ = Level::kWarn;
 };
 
-[[nodiscard]] std::string hex_dump(std::span<const std::uint8_t> data,
+[[nodiscard]] std::string hex_dump(const std::span<const std::uint8_t> data,
                                    std::size_t max_bytes = 32);
 
 inline void bump_verbose(Level& level) noexcept {

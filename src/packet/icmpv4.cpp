@@ -13,7 +13,7 @@ namespace traceroute {
 namespace packet {
 namespace {
 
-std::optional<Icmpv4Echo> echo_id_seq(net::ByteSpan icmp) {
+std::optional<Icmpv4Echo> echo_id_seq(const net::ByteSpan icmp) noexcept {
   if (icmp.size() < kIcmpHeaderBytes) {
     return std::nullopt;
   }
@@ -23,8 +23,8 @@ std::optional<Icmpv4Echo> echo_id_seq(net::ByteSpan icmp) {
   };
 }
 
-bool is_our_echo_request(net::ByteSpan icmp, std::uint16_t expect_id,
-                         std::uint16_t expect_seq) {
+bool is_our_echo_request(const net::ByteSpan icmp, std::uint16_t expect_id,
+                         std::uint16_t expect_seq) noexcept {
   if (icmp.size() < kIcmpHeaderBytes) {
     return false;
   }
@@ -37,7 +37,7 @@ bool is_our_echo_request(net::ByteSpan icmp, std::uint16_t expect_id,
   return echo && echo->id == expect_id && echo->seq == expect_seq;
 }
 
-bool looks_like_ipv4_icmp(net::ByteSpan datagram) {
+bool looks_like_ipv4_icmp(const net::ByteSpan datagram) noexcept {
   if (datagram.size() < kIpv4MinHeaderBytes) {
     return false;
   }
@@ -52,8 +52,8 @@ bool looks_like_ipv4_icmp(net::ByteSpan datagram) {
   return datagram[kIpv4ProtocolOffset] == kIpProtoIcmp;
 }
 
-net::ByteSpan icmp_bytes_from_ipv4(net::ByteSpan datagram,
-                                   const Ipv4HeaderView& ip) {
+net::ByteSpan icmp_bytes_from_ipv4(const net::ByteSpan datagram,
+                                   const Ipv4HeaderView& ip) noexcept {
   const auto header = static_cast<std::size_t>(ip.header_bytes);
   std::size_t icmp_len = datagram.size() - header;
   if (ip.total_length > header &&
@@ -63,10 +63,9 @@ net::ByteSpan icmp_bytes_from_ipv4(net::ByteSpan datagram,
   return datagram.subspan(header, icmp_len);
 }
 
-std::optional<ProbeReply> match_icmp_payload(net::ByteSpan icmp,
-                                             const net::IpAddress& responder,
-                                             std::uint16_t expect_id,
-                                             std::uint16_t expect_seq) {
+std::optional<ProbeReply> match_icmp_payload(
+    const net::ByteSpan icmp, const net::IpAddress& responder,
+    std::uint16_t expect_id, std::uint16_t expect_seq) noexcept {
   using enum Icmpv4Type;
 
   if (icmp.size() < kIcmpHeaderBytes) {
@@ -127,7 +126,7 @@ std::optional<ProbeReply> match_icmp_payload(net::ByteSpan icmp,
 
 std::vector<std::uint8_t> build_echo_request(std::uint16_t id,
                                              std::uint16_t seq,
-                                             net::ByteSpan payload) {
+                                             const net::ByteSpan payload) {
   std::vector<std::uint8_t> packet(kIcmpHeaderBytes + payload.size(), 0);
   packet[kIcmpTypeOffset] = static_cast<std::uint8_t>(Icmpv4Type::kEchoRequest);
   packet[kIcmpCodeOffset] = kIcmpEchoCode;
@@ -140,9 +139,8 @@ std::vector<std::uint8_t> build_echo_request(std::uint16_t id,
   return packet;
 }
 
-std::vector<std::uint8_t> wrap_quoted_as_icmp_error(std::uint8_t type,
-                                                    std::uint8_t code,
-                                                    net::ByteSpan quoted) {
+std::vector<std::uint8_t> wrap_quoted_as_icmp_error(
+    std::uint8_t type, std::uint8_t code, const net::ByteSpan quoted) {
   std::vector<std::uint8_t> inner;
   if (!quoted.empty() && ipv4_version(quoted[0]) == kIpv4Version) {
     inner.assign(quoted.begin(), quoted.end());
@@ -164,8 +162,8 @@ std::vector<std::uint8_t> wrap_quoted_as_icmp_error(std::uint8_t type,
 }
 
 std::optional<ProbeReply> match_ipv4_probe_reply(
-    net::ByteSpan datagram, const net::IpAddress& recvfrom_src,
-    std::uint16_t expect_id, std::uint16_t expect_seq) {
+    const net::ByteSpan datagram, const net::IpAddress& recvfrom_src,
+    std::uint16_t expect_id, std::uint16_t expect_seq) noexcept {
   if (looks_like_ipv4_icmp(datagram)) {
     const auto ip = parse_ipv4_header(datagram);
     if (!ip) {

@@ -13,7 +13,7 @@ namespace net {
 
 class IProbeChannel {
  public:
-  virtual ~IProbeChannel() = default;
+  virtual ~IProbeChannel() noexcept = default;
 
   IProbeChannel(const IProbeChannel&) = delete;
   IProbeChannel& operator=(const IProbeChannel&) = delete;
@@ -27,12 +27,12 @@ class IProbeChannel {
   // send), not the id we wrote into the userspace buffer.
   [[nodiscard]] virtual std::uint16_t send_probe(const IpAddress& dest,
                                                  std::uint16_t seq,
-                                                 ByteSpan payload) = 0;
+                                                 const ByteSpan payload) = 0;
   [[nodiscard]] virtual std::optional<ReceivedPacket> receive(
       std::chrono::milliseconds timeout) = 0;
 
  protected:
-  IProbeChannel() = default;
+  IProbeChannel() noexcept = default;
 };
 
 }  // namespace net

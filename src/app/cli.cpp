@@ -32,7 +32,8 @@ int parse_positive_int(const std::string& name, const std::string& value,
   return parsed;
 }
 
-const char* require_value(int argc, char** argv, int i, const char* name) {
+const char* require_value(int argc, char* const* argv, int i,
+                          const char* const name) {
   if (i + 1 >= argc) {
     throw std::invalid_argument(std::format("{} requires a value", name));
   }
@@ -40,7 +41,7 @@ const char* require_value(int argc, char** argv, int i, const char* name) {
 }
 
 [[noreturn]] void throw_unimplemented(const net::ProbeSpec& spec) {
-  const char* why = net::unimplemented_reason(spec);
+  const char* const why = net::unimplemented_reason(spec);
   throw std::invalid_argument(why != nullptr ? why : "not implemented");
 }
 
@@ -65,7 +66,7 @@ void print_help(std::ostream& out) {
       << "  -vv                Debug logs on stderr (hex dumps)\n";
 }
 
-CliResult parse_cli(int argc, char** argv) {
+CliResult parse_cli(const int argc, char* const* argv) {
   CliResult result;
   std::string host;
 

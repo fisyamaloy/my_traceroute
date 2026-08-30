@@ -64,7 +64,8 @@ class ScriptedChannel : public IProbeChannel {
 
   void set_hop_limit(int) override {}
 
-  std::uint16_t send_probe(const IpAddress&, std::uint16_t, ByteSpan) override {
+  std::uint16_t send_probe(const IpAddress&, std::uint16_t,
+                           const ByteSpan) override {
     return ident_;
   }
 

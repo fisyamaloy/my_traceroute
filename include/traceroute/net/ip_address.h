@@ -26,9 +26,9 @@ class IpAddress {
 
   std::string to_string() const;
 
-  friend bool operator==(const IpAddress&, const IpAddress&) = default;
+  friend bool operator==(const IpAddress&, const IpAddress&) noexcept = default;
   friend std::strong_ordering operator<=>(const IpAddress&,
-                                          const IpAddress&) = default;
+                                          const IpAddress&) noexcept = default;
 
  private:
   AddressFamily family_ = AddressFamily::kIpv4;

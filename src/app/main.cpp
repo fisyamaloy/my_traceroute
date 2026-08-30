@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
       traceroute::app::print_help(std::cout);
       return 0;
     }
-    auto factory = traceroute::net::make_network_factory();
+    const auto factory = traceroute::net::make_network_factory();
     const traceroute::log::Logger log(std::cerr, cli.options.log_level);
     return traceroute::core::run(*factory, cli.options, std::cout, log);
 
