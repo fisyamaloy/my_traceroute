@@ -48,7 +48,7 @@ struct Ipv4HeaderView {
 };
 
 [[nodiscard]] std::optional<Ipv4HeaderView> parse_ipv4_header(
-    net::ByteSpan datagram);
+    const net::ByteSpan datagram) noexcept;
 
 }  // namespace packet
 }  // namespace traceroute

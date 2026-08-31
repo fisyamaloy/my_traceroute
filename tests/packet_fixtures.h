@@ -15,7 +15,7 @@ namespace traceroute {
 namespace test {
 
 inline net::IpAddress ipv4(std::uint32_t a, std::uint32_t b, std::uint32_t c,
-                           std::uint32_t d) {
+                           std::uint32_t d) noexcept {
   return net::IpAddress::ipv4_from_host_order((a << 24) | (b << 16) | (c << 8) |
                                               d);
 }

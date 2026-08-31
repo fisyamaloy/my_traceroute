@@ -9,8 +9,6 @@
 #include <stdexcept>
 #include <system_error>
 
-#include "platform/posix/posix_sockaddr.h"
-
 namespace traceroute {
 namespace net {
 namespace posix {
@@ -96,12 +94,13 @@ UniqueFd open_icmp_dgram_socket() {
   return UniqueFd(fd);
 }
 
-IpAddress source_from_recv(const sockaddr_in& from, socklen_t from_len) {
+IpAddress source_from_recv(const sockaddr_in& from,
+                           socklen_t from_len) noexcept {
   if (from_len < static_cast<socklen_t>(sizeof(sockaddr_in)) ||
       from.sin_family != AF_INET) {
-    return IpAddress::ipv4_from_host_order(0);
+    return IpAddress{};
   }
-  return from_sockaddr(reinterpret_cast<const sockaddr*>(&from), from_len);
+  return IpAddress::ipv4_from_network_order(from.sin_addr.s_addr);
 }
 
 }  // namespace posix

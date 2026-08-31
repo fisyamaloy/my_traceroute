@@ -26,9 +26,9 @@ struct ProbeReply {
                                       std::uint8_t code) noexcept;
 
 [[nodiscard]] std::optional<ProbeReply> match_probe_reply(
-    const net::ProbeSpec& spec, net::ByteSpan datagram,
+    const net::ProbeSpec& spec, const net::ByteSpan datagram,
     const net::IpAddress& recvfrom_src, std::uint16_t expect_id,
-    std::uint16_t expect_seq);
+    std::uint16_t expect_seq) noexcept;
 
 }  // namespace packet
 }  // namespace traceroute

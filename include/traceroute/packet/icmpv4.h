@@ -62,14 +62,14 @@ struct Icmpv4Echo {
 };
 
 [[nodiscard]] std::vector<std::uint8_t> build_echo_request(
-    std::uint16_t id, std::uint16_t seq, net::ByteSpan payload);
+    std::uint16_t id, std::uint16_t seq, const net::ByteSpan payload);
 
 // Reconstruct Time Exceeded / Dest Unreachable from a quoted original
 // datagram (IPv4+ICMP or bare ICMP). Linux IP_RECVERR uses this.
 // Fills a valid ICMP checksum so the packet is well-formed; see
 // match_ipv4_probe_reply for why receive-side checksum is not required.
 [[nodiscard]] std::vector<std::uint8_t> wrap_quoted_as_icmp_error(
-    std::uint8_t type, std::uint8_t code, net::ByteSpan quoted);
+    std::uint8_t type, std::uint8_t code, const net::ByteSpan quoted);
 
 // Match Echo Reply / Time Exceeded / Dest Unreachable for our id/seq.
 // Does not verify the ICMP checksum field: Darwin SOCK_DGRAM already
@@ -77,8 +77,8 @@ struct Icmpv4Echo {
 // a garbage checksum and padding. Requiring a valid checksum drops every
 // reply (all hops print "*").
 [[nodiscard]] std::optional<ProbeReply> match_ipv4_probe_reply(
-    net::ByteSpan datagram, const net::IpAddress& recvfrom_src,
-    std::uint16_t expect_id, std::uint16_t expect_seq);
+    const net::ByteSpan datagram, const net::IpAddress& recvfrom_src,
+    std::uint16_t expect_id, std::uint16_t expect_seq) noexcept;
 
 }  // namespace packet
 }  // namespace traceroute

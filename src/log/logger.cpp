@@ -15,7 +15,7 @@ void Logger::log(Level level, std::string_view message) const {
   *err_ << "traceroute: " << message << '\n' << std::flush;
 }
 
-std::string hex_dump(std::span<const std::uint8_t> data,
+std::string hex_dump(const std::span<const std::uint8_t> data,
                      std::size_t max_bytes) {
   if (data.empty()) {
     return {};

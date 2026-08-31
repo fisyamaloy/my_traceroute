@@ -67,7 +67,7 @@ class StreamFormat {
  public:
   explicit StreamFormat(std::ostream& out)
       : out_(out), flags_(out.flags()), precision_(out.precision()) {}
-  ~StreamFormat() {
+  ~StreamFormat() noexcept {
     out_.flags(flags_);
     out_.precision(precision_);
   }
@@ -148,7 +148,7 @@ bool destination_reached(const TraceHop& hop) noexcept {
 
 TraceResult trace(const net::INetworkFactory& factory, const Options& options,
                   const log::Logger& log, std::ostream* out) {
-  auto resolver = factory.create_resolver();
+  const auto resolver = factory.create_resolver();
   TraceResult result;
   result.host = options.host;
   result.dest = resolver->resolve(options.host, options.probe.family);
@@ -161,7 +161,7 @@ TraceResult trace(const net::INetworkFactory& factory, const Options& options,
                                            result.dest.to_string()));
   }
 
-  auto channel = factory.create_probe_channel(result.probe, log);
+  const auto channel = factory.create_probe_channel(result.probe, log);
   if (out != nullptr) {
     write_banner(*out, result);
   }

@@ -3,7 +3,8 @@
 namespace traceroute {
 namespace packet {
 
-std::uint16_t internet_checksum(std::span<const std::uint8_t> data) noexcept {
+std::uint16_t internet_checksum(
+    const std::span<const std::uint8_t> data) noexcept {
   std::uint32_t sum = 0;
   std::size_t i = 0;
   for (; i + 1 < data.size(); i += 2) {

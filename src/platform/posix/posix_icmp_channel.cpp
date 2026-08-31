@@ -64,7 +64,7 @@ void PosixIcmpChannel::set_hop_limit(int ttl) {
 
 std::uint16_t PosixIcmpChannel::send_probe(const IpAddress& dest,
                                            std::uint16_t seq,
-                                           ByteSpan payload) {
+                                           const ByteSpan payload) {
   if (!dest.is_ipv4()) {
     throw std::logic_error(
         "IPv4 ICMP channel cannot send to a non-IPv4 address");

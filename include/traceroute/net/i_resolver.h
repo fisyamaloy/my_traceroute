@@ -10,7 +10,7 @@ namespace net {
 
 class IResolver {
  public:
-  virtual ~IResolver() = default;
+  virtual ~IResolver() noexcept = default;
 
   IResolver(const IResolver&) = delete;
   IResolver& operator=(const IResolver&) = delete;
@@ -21,7 +21,7 @@ class IResolver {
                             AddressFamily family) const = 0;
 
  protected:
-  IResolver() = default;
+  IResolver() noexcept = default;
 };
 
 }  // namespace net

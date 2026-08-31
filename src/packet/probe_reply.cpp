@@ -51,10 +51,10 @@ const char* unreach_tag(const net::ProbeSpec& spec,
 }
 
 std::optional<ProbeReply> match_probe_reply(const net::ProbeSpec& spec,
-                                            net::ByteSpan datagram,
+                                            const net::ByteSpan datagram,
                                             const net::IpAddress& recvfrom_src,
                                             std::uint16_t expect_id,
-                                            std::uint16_t expect_seq) {
+                                            std::uint16_t expect_seq) noexcept {
   if (spec.family == net::AddressFamily::kIpv4 &&
       spec.protocol == net::ProbeProtocol::kIcmpEcho) {
     return match_ipv4_probe_reply(datagram, recvfrom_src, expect_id,

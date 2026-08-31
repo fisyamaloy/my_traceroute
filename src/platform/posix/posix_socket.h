@@ -18,13 +18,14 @@ namespace posix {
 // recvfrom errors that are not fatal: keep waiting until the probe deadline.
 [[nodiscard]] bool is_transient_recv_errno(int err) noexcept;
 
-int poll_timeout_ms(std::chrono::milliseconds timeout) noexcept;
+[[nodiscard]] int poll_timeout_ms(std::chrono::milliseconds timeout) noexcept;
 void set_fd_cloexec(int fd) noexcept;
 void clear_socket_error(int fd) noexcept;
 void bind_icmp_ipv4_any(int fd);
-int socket_inet(int socktype, int protocol) noexcept;
-UniqueFd open_icmp_dgram_socket();
-IpAddress source_from_recv(const sockaddr_in& from, socklen_t from_len);
+[[nodiscard]] int socket_inet(int socktype, int protocol) noexcept;
+[[nodiscard]] UniqueFd open_icmp_dgram_socket();
+[[nodiscard]] IpAddress source_from_recv(const sockaddr_in& from,
+                                         socklen_t from_len) noexcept;
 
 }  // namespace posix
 }  // namespace net

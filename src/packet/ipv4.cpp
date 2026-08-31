@@ -9,7 +9,8 @@
 namespace traceroute {
 namespace packet {
 
-std::optional<Ipv4HeaderView> parse_ipv4_header(net::ByteSpan datagram) {
+std::optional<Ipv4HeaderView> parse_ipv4_header(
+    const net::ByteSpan datagram) noexcept {
   if (datagram.size() < kIpv4MinHeaderBytes) {
     return std::nullopt;
   }
